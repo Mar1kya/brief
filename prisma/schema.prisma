@@ -12,3 +12,46 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum BriefStatus {
+  NEW
+  IN_REVIEW
+  ACCEPTED
+  REJECTED
+}
+
+model Brief {
+  id                     String  @id @default(cuid())
+  
+  customerName           String
+  customerPosition       String?
+  email                  String
+  phone                  String
+  companyName            String  @default("ФК Полісся")
+  preferredContactMethod String  @default("EMAIL")
+
+  businessGoals   String[]
+  targetAudience  String   @db.Text
+  currentProblems String   @db.Text
+
+  matchCenterFeatures String[]
+  userCabinetModules  String[]
+  ticketingSystem     String
+
+  shopCategories           String   @db.Text
+  paymentMethods           String[]
+  needsInventoryManagement Boolean  @default(false)
+
+  contentUpdateFrequency String
+  matchResultsImport     String
+
+  hasBrandbook      Boolean @default(false)
+  designMood        String
+  expectsPeakLoads  Boolean @default(false)
+  estimatedDeadline String
+
+  status BriefStatus @default(NEW)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
