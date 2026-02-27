@@ -1,6 +1,6 @@
-import { auth, signOut } from "@/auth"; // Імпортуємо signOut
+import { auth, signOut } from "@/auth"; 
 import Link from "next/link";
-import { ShieldUser, LogOut } from "lucide-react"; // Додали LogOut іконку
+import { ShieldUser, LogOut } from "lucide-react"; 
 import { Button } from "@/components/ui/button";
 
 export default async function Header() {
@@ -20,7 +20,6 @@ export default async function Header() {
                         </Link>
                     </nav>
                 </div>
-
                 <div className="flex items-center gap-2">
                     {session?.user.role === "ADMIN" && (
                         <>
@@ -41,7 +40,6 @@ export default async function Header() {
                             </form>
                         </>
                     )}
-
                     {!session?.user && (
                         <Link
                             href="/login"
