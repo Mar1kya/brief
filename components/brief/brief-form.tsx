@@ -25,8 +25,11 @@ import { briefSchema, type BriefFormValues } from "@/lib/validations"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Switch } from "../ui/switch"
+import { useState } from "react"
+import { addBrief } from "@/actions/brief"
 
 export function BriefForm() {
+    const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error' | null, text: string }>({ type: null, text: '' });
     const { control, register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<BriefFormValues>({
         resolver: zodResolver(briefSchema),
         defaultValues: {
@@ -52,16 +55,26 @@ export function BriefForm() {
             estimatedDeadline: "",
         }
     });
-    function onSubmit(data: BriefFormValues) {
-        console.log(data);
+    async function onSubmit(data: BriefFormValues) {
+        setStatusMessage({ type: null, text: '' });
+
+        const result = await addBrief(data);
+
+        if (!result.success) {
+            setStatusMessage({ type: 'error', text: result.error || 'Сталася невідома помилка' });
+        } else {
+            setStatusMessage({ type: 'success', text: result.message || 'Успіх!' });
+            reset();
+        }
+
     };
     return (
         <div className="max-w-4xl mx-auto py-12 px-4">
             <div className="mb-12 space-y-4 text-center">
-                <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
+                <h1 className="text-2xl font-extrabold tracking-tight lg:text-5xl">
                     Бриф на розробку футбольного порталу
                 </h1>
-                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-md lg:text-xl text-muted-foreground max-w-2xl mx-auto">
                     Ця анкета допоможе нам зібрати всі необхідні вимоги для проектування екосистеми вашого клубу.
                 </p>
             </div>
@@ -459,13 +472,22 @@ export function BriefForm() {
                             </Field>
                         </FieldGroup>
                     </FieldSet>
-                    <Field orientation="horizontal" className="mt-8 justify-end">
+                    <Field orientation="horizontal" className="mt-8 justify-center md:justify-end">
                         <Button variant="outline" type="button" onClick={() => reset()}>
                             Скасувати
                         </Button>
                         <Button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Відправка брифу...' : 'Відправити бриф'}</Button>
                     </Field>
-
+                    {statusMessage.type === 'success' && (
+                        <div className="p-4 rounded-md bg-emerald-50 text-emerald-600 border border-emerald-200 text-center font-medium">
+                            {statusMessage.text}
+                        </div>
+                    )}
+                    {statusMessage.type === 'error' && (
+                        <div className="p-4 rounded-md bg-destructive/10 text-destructive border border-destructive/20 text-center font-medium">
+                            {statusMessage.text}
+                        </div>
+                    )}
                 </FieldGroup>
             </form>
         </div>
