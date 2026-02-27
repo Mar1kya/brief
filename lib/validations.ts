@@ -28,4 +28,16 @@ export const briefSchema = z.object({
   estimatedDeadline: z.string().min(1, "Вкажіть орієнтовні терміни запуску"),
 });
 
+
 export type BriefFormValues = z.infer<typeof briefSchema>;
+
+export const signInSchema = z.object({
+  email: z.string().email("Некоректний формат email"),
+  password: z.string().min(1, "Пароль обов'язковий"),
+});
+
+export type ActionResponse = {
+  success?: boolean;
+  message?: string;
+  error?: string | Record<string, string[]>;
+};

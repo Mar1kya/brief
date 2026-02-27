@@ -13,6 +13,22 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  password String
+  name     String? 
+  role     UserRole @default(USER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum BriefStatus {
   NEW
   IN_REVIEW
@@ -21,8 +37,8 @@ enum BriefStatus {
 }
 
 model Brief {
-  id                     String  @id @default(cuid())
-  
+  id String @id @default(cuid())
+
   customerName           String
   customerPosition       String?
   email                  String
