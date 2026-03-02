@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { BriefStatus } from "./generated/prisma";
 
 const phoneRegex = /^(?:\+380|0)\d{9}$/;
 
@@ -55,3 +56,22 @@ export type ActionResponse = {
   message?: string;
   error?: string | Record<string, string[]>;
 };
+
+export const briefUpdateSchema = z.object({
+  status: z.nativeEnum(BriefStatus),
+  customerName: z.string().min(2, "Ім'я занадто коротке"),
+  email: z.string().email("Введіть коректний email"),
+  phone: z.string().min(9, "Введіть коректний номер телефону"),
+});
+
+export type BriefUpdateFormValues = z.infer<typeof briefUpdateSchema>;
+
+export const formUpdateSchema = z.object({
+  status: z.enum(["NEW", "IN_REVIEW", "ACCEPTED", "REJECTED"]),
+  customerName: z.string().min(2, "Ім'я занадто коротке"),
+  email: z.string().email("Введіть коректний email"),
+  phone: z
+    .string()
+    .min(1, "Телефон обов'язковий")
+    .regex(phoneRegex, "Формат: +380XXXXXXXXX або 0XXXXXXXXX"),
+});

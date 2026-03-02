@@ -17,8 +17,8 @@ import { Brief } from "@/lib/generated/prisma"
 const getStatusBadge = (status: string) => {
   switch (status) {
     case "NEW": return <Badge variant="default" className="bg-blue-500">Новий</Badge>
-    case "IN_PROGRESS": return <Badge variant="secondary" className="bg-yellow-500 text-white">В обробці</Badge>
-    case "APPROVED": return <Badge variant="default" className="bg-emerald-500">Укладено</Badge>
+    case "IN_REVIEW": return <Badge variant="secondary" className="bg-yellow-500 text-white">В обробці</Badge>
+    case "ACCEPTED": return <Badge variant="default" className="bg-emerald-500">Укладено</Badge>
     case "REJECTED": return <Badge variant="destructive">Відхилено</Badge>
     default: return <Badge variant="outline">{status}</Badge>
   }
