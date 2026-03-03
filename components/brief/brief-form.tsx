@@ -257,6 +257,7 @@ export function BriefForm() {
                             </div>
                             <div>
                                 <FieldLegend variant="label" className="mb-3">Кабінет вболівальника</FieldLegend>
+                                <FieldDescription className="mb-3">(необов'язково)</FieldDescription>
                                 <FieldGroup className="gap-3">
                                     {userCabinetOptions.map((option) => (
                                         <Field key={option.id} orientation="horizontal" className="items-center">
@@ -313,6 +314,7 @@ export function BriefForm() {
                         <FieldGroup>
                             <Field>
                                 <FieldLabel htmlFor="shopCategories">Категорії товарів</FieldLabel>
+                                <FieldDescription>(необов'язково)</FieldDescription>
                                 <Textarea
                                     id="shopCategories"
                                     placeholder="Наприклад: ігрова форма, аксесуари, сувеніри..."

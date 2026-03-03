@@ -21,7 +21,7 @@ export default async function Header() {
                     </nav>
                 </div>
                 <div className="flex items-center gap-2">
-                    {session?.user.role === "ADMIN" && (
+                    {session?.user && session.user.role === "ADMIN" && (
                         <>
                             <Link
                                 href="/admin"
