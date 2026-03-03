@@ -2,10 +2,29 @@ import { prisma } from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import BriefDetailsForm from "@/components/brief/brief-details-form"
 
-export default async function BriefDetailsPage({ 
-    params 
-}: { 
-    params: Promise<{ id: string }> 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
+    const brief = await prisma.brief.findUnique({
+        where: { id: id },
+        select: { companyName: true }
+    })
+    if (!brief) {
+        return {
+            title: "Не відомо",
+            description: "Не відомо"
+        }
+    }
+    return {
+        title: brief.companyName,
+        description: `Лист від компанії ${brief.companyName}`
+    }
+}
+
+
+export default async function BriefDetailsPage({
+    params
+}: {
+    params: Promise<{ id: string }>
 }) {
     const { id } = await params
     const brief = await prisma.brief.findUnique({

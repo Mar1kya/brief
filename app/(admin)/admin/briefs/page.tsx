@@ -2,6 +2,11 @@ import { prisma } from "@/lib/prisma"
 import { DataTable } from "@/components/admin/briefs/data-table";
 import { columns } from "@/components/admin/briefs/columns";
 
+export const metadata = {
+    title: "Сторінка управління брифами",
+    description: "Тут ви можете переглядати та редагувати статуси вхідних заявок."
+}
+
 export default async function AdminBriefsPage() {
     const briefs = await prisma.brief.findMany({
         orderBy: {
